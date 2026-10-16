@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محرّر اللعبة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../engine/style.css">
+</head>
+<body>
+<main>
+  <h1>محرّر اللعبة</h1>
+  <p id="bmsg" class="msg" style="color:#fff" aria-live="polite"></p>
+  <div id="bb"></div>
+  <details class="card" open><summary>الأسئلة</summary>
+    <div id="qs"></div>
+    <div class="row"><select id="newT" aria-label="نوع السؤال الجديد"></select><button class="big" id="addQ" style="margin:6px">+ إضافة سؤال</button></div>
+    <p id="warn" class="msg"></p>
+  </details>
+  <div class="row">
+    <button id="save" class="big ok">💾 حفظ مسودة</button>
+    <button id="dl" class="big">⬇ تنزيل config.js</button>
+    <button id="exp" class="big alt">تصدير JSON</button>
+    <label class="big alt" style="cursor:pointer">استيراد JSON<input id="imp" type="file" accept=".json" hidden></label>
+    <button id="rst" class="big no">استعادة الافتراضي</button>
+  </div>
+</main>
+<script>
+var L = new URLSearchParams(location.search).get("lesson") || "lesson-1";
+document.write('<script src="../lessons/' + encodeURIComponent(L) + '/config.js"><\/script><script src="builder.js"><\/script>');
+</script>
+</body>
+</html>
