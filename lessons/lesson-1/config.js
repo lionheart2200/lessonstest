@@ -13,7 +13,7 @@ window.GAME_CONFIG = {
 
   /* نموذج GLB عام اختياري. يمكن تجاوز الرابط لكل فريق عبر modelUrl داخل players.
      اتركه فارغًا لاستخدام الشخصية الهندسية المضمنة. */
-  models: { character: "" },
+  models: { character: "models/character.glb" },
 
   /* --- خيارات المظهر (المفتاح: الاسم المعروض) --- */
   options: {
