@@ -14,7 +14,7 @@ window.GAME_CONFIG = {
   /* --- نماذج GLB ثلاثية الأبعاد (اختياري، اتركها فارغة لاستخدام الشخصيات المدمجة) ---
      ضع ملف .glb داخل مجلد الدرس بجانب config.js واكتب اسمه هنا، مثل: male: "boy.glb"
      يمكن أيضًا تحديد نموذج للاعب بعينه بإضافة model: "ملف.glb" داخل players. */
-  models: { male: "", female: "", neutral: "" },
+  models: { male: "boy.glb", female: "", neutral: "boy.glb" },
 
   /* --- خيارات المظهر (المفتاح: الاسم المعروض) --- */
   options: {
