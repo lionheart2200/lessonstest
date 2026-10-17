@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مغامرة الأسئلة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <button id="bSound" class="mini" aria-label="الصوت">🔊</button>
+  <button id="bFull" class="mini" aria-label="ملء الشاشة">⛶</button>
+  <button id="bReset" class="mini" aria-label="إعادة اللعبة">↺</button>
+</header>
+<main>
+<section id="s-start" class="screen">
+  <h1 id="title"></h1><h2 id="subtitle"></h2><p id="desc"></p>
+  <div id="setup" class="duo"></div>
+  <div class="card opts">
+    <label>عدد الجولات (سؤال لكل فريق) <select id="oCount"></select></label>
+    <label>وقت السؤال (ثانية) <select id="oTime"></select></label>
+    <label>مشهد المغامرة <select id="oScene"></select></label>
+  </div>
+  <button id="bStart" class="big">ابدأ المغامرة</button>
+</section>
+
+<section id="s-play" class="screen" hidden>
+  <div class="duo" id="arena"></div>
+  <div class="card q">
+    <div class="row"><b id="qTurn"></b><span id="qCat" class="tag"></span><span id="qPts" class="tag"></span><span id="qTime" class="timer" role="timer">0</span></div>
+    <p id="qText"></p>
+    <div id="qOpts" class="opts4"></div>
+    <div id="jk" class="row"></div>
+    <div id="qAns" class="ans" hidden></div>
+    <p id="qMsg" class="msg" aria-live="polite"></p>
+    <div class="row" id="judge">
+      <button id="bOk" class="big ok">✔ إجابة صحيحة</button>
+      <button id="bNo" class="big no">✖ إجابة خاطئة</button>
+    </div>
+    <button id="bNext" class="big" hidden>التالي</button>
+  </div>
+</section>
+
+<section id="s-end" class="screen" hidden>
+  <h1 id="endTitle"></h1>
+  <div class="duo" id="endArena"></div>
+  <p id="endScore" class="msg"></p>
+  <div class="row">
+    <button id="bSkip" class="big alt">تخطي المشهد</button>
+    <button id="bAgain" class="big">إعادة اللعب</button>
+    <button id="bNew" class="big alt">لعبة جديدة</button>
+  </div>
+</section>
+</main>
+<div id="confetti" aria-hidden="true"></div>
+<script src="config.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/GLTFLoader.js"></script>
+<script src="stage3d.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
