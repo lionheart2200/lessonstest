@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>أداة بناء أسئلة مغامرة أبطال المعرفة</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--ink:#1b2340;color-scheme:light}*,*::before,*::after{box-sizing:inherit}
+body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:var(--ink);background:linear-gradient(160deg,#dfe9ff,#fff3cf);font-size:18px;overflow-x:hidden}
+.wrap{max-width:900px;margin:auto;padding:12px}.card{background:#fff;border-radius:18px;box-shadow:0 6px 18px #1b234026;padding:14px;margin-bottom:12px}h1{color:#3b2bb5;margin:0 0 8px;font-size:28px}h2{margin:0 0 8px}
+.g{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}label{display:block;font-weight:700;font-size:15px;margin-top:8px}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:2px solid #b9c4e8;border-radius:12px;color:var(--ink);background:#fff}
+button{font:inherit;cursor:pointer;min-height:48px;padding:6px 16px;border-radius:14px;border:0;background:#e6ebff;font-weight:700;box-shadow:0 4px 0 #b9c4e8;margin:6px 6px 0 0;color:var(--ink)}button.pri{background:linear-gradient(#ffd24a,#f5a800);box-shadow:0 5px 0 #b27700}
+:focus-visible{outline:4px solid #7c3aed;outline-offset:2px}.hint{font-size:14px;color:#556}.err{color:#c01;font-weight:700}.ok{color:#087f3a;font-weight:700}
+.qi{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #dde;padding:6px 0}.qi span{flex:1;min-width:180px}.qi button{min-height:38px;font-size:14px;padding:2px 10px;margin:0}
+.hide{display:none}.tag{background:#ffe08a;border-radius:8px;padding:1px 6px;font-size:13px}pre{white-space:pre-wrap;background:#f3f5ff;padding:10px;border-radius:12px;font-size:14px;direction:ltr;text-align:left;overflow-x:auto}
+</style></head><body><div class="wrap">
+<div class="card"><h1>🛠️ أداة بناء الدروس</h1><div class="hint">أنشئ أسئلة درسك ثم احفظها كملف يُرفع إلى GitHub بجانب صفحة اللعبة.</div></div>
+<div class="card"><h2>بيانات الدرس</h2><div class="g"><label>المادة<input id="subj"></label><label>عنوان الدرس<input id="lesson"></label><label>الصف<select id="grade"></select></label><label>اسم الملف (حروف إنجليزية)<input id="fn" placeholder="lesson-1"></label></div><label>ملخص الدرس (اختياري)<textarea id="summary" rows="2"></textarea></label></div>
+<div class="card"><h2>إضافة سؤال <span id="mode" class="tag hide">وضع التعديل</span></h2>
+<div class="g"><label>النوع<select id="qt"><option value="mc">اختيار من متعدد / موقف تطبيقي</option><option value="tf">صح أو خطأ</option><option value="fill">إكمال فراغ</option></select></label><label>الصعوبة<select id="qd"><option value="1">سهل (10 نقاط)</option><option value="2" selected>متوسط (20)</option><option value="3">صعب (30)</option></select></label></div>
+<label>نص السؤال<textarea id="qx" rows="2"></textarea></label><label id="lc">الإجابة الصحيحة<input id="qc"></label>
+<label id="ltf" class="hide">الإجابة الصحيحة<select id="qtf"><option>صح</option><option>خطأ</option></select></label>
+<label id="qwl">الخيارات الخاطئة (واحد في كل سطر، اثنان على الأقل)<textarea id="qw" rows="3"></textarea></label><label>تفسير قصير (اختياري، يظهر بعد الإجابة)<input id="qe"></label>
+<p class="err" id="qerr"></p><button class="pri" id="qadd">إضافة السؤال</button><button id="qcancel" class="hide">إلغاء التعديل</button>
+<details><summary>استيراد عدة أسئلة دفعة واحدة</summary><p class="hint">سطر لكل سؤال: السؤال | الصحيحة | خطأ1 ; خطأ2 | تفسير | الصعوبة (1 و2 و3). بدون خيارات خاطئة يصبح صح/خطأ أو إكمال فراغ.</p><textarea id="bulk" rows="4"></textarea><button id="bimp">استيراد</button></details></div>
+<div class="card"><h2>الأسئلة <span id="qn" class="hint"></span></h2><div id="qlist"></div><div id="warn" class="hint"></div></div>
+<div class="card"><h2>التصدير والمشاركة</h2><label>رابط صفحة اللعبة على GitHub Pages<input id="base" placeholder="https://username.github.io/repo/index.html" dir="ltr"></label>
+<button class="pri" id="dl">⬇ حفظ ملف الدرس (JSON)</button><button id="cp">نسخ رابط الدرس المباشر</button><button id="pvw">▶ تجربة اللعبة بهذا الدرس</button>
+<label>فتح ملف درس سابق للتعديل<input type="file" id="lf" accept=".json,application/json"></label><button id="clr">مسح كل الأسئلة</button>
+<p id="msg" class="ok"></p><p class="hint">رابط الدرس المباشر يحمل الأسئلة داخله فلا يحتاج ملفًا. للرابط القصير ارفع ملف JSON إلى مجلد lessons في GitHub، فيصبح رابطك:</p><pre id="url">—</pre>
+<label>محتوى الملف (للنسخ اليدوي عند تعذّر التحميل)<textarea id="out" rows="4" readonly dir="ltr"></textarea></label></div></div>
+<script>
+(()=>{const $=s=>document.querySelector(s),V=id=>$("#"+id).value,esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let Q=[],ed=-1;const T={mc:"اختيار",tf:"صح/خطأ",fill:"فراغ"};
+for(let i=1;i<=12;i++)$("#grade").add(new Option("الصف "+i,i));
+const data=()=>({subj:V("subj").trim(),lesson:V("lesson").trim(),grade:V("grade"),summary:V("summary"),questions:Q});
+const save=()=>{try{localStorage.setItem("abkb",JSON.stringify(data()))}catch(e){}};
+function load(d){if(!d||!Array.isArray(d.questions))return false;Q=d.questions.map(q=>({type:q.type,text:q.text,correct:q.correct,wrong:q.wrong||[],exp:q.exp||"",diff:+q.diff||2}));["subj","lesson","grade","summary"].forEach(k=>{if(d[k]!==undefined)$("#"+k).value=d[k]});render();return true}
+function form(){const t=V("qt");$("#qwl").classList.toggle("hide",t!=="mc");$("#lc").classList.toggle("hide",t==="tf");$("#ltf").classList.toggle("hide",t!=="tf")}
+function reset(){ed=-1;["qx","qc","qw","qe"].forEach(i=>$("#"+i).value="");$("#qadd").textContent="إضافة السؤال";$("#mode").classList.add("hide");$("#qcancel").classList.add("hide")}
+function add(){const t=V("qt"),x=V("qx").trim(),c=(t==="tf"?V("qtf"):V("qc")).trim(),w=V("qw").split("\n").map(s=>s.trim()).filter(Boolean);let e="";
+ if(!x||!c)e="أدخل نص السؤال والإجابة الصحيحة";else if(t==="mc"&&(w.length<2||new Set(w).size!==w.length||w.includes(c)))e="أدخل خيارين خاطئين مختلفين على الأقل، ولا تكرر الإجابة الصحيحة";
+ $("#qerr").textContent=e;if(e)return;const q={type:t,text:x,correct:c,wrong:t==="mc"?w:[],exp:V("qe").trim(),diff:+V("qd")};if(ed>=0)Q[ed]=q;else Q.push(q);reset();render()}
+function bulk(){let n=0;V("bulk").split("\n").forEach(l=>{const p=l.split("|").map(s=>s.trim());if(p.length<2||!p[0]||!p[1])return;const w=(p[2]||"").split(";").map(s=>s.trim()).filter(Boolean);const t=w.length>=2?"mc":(p[1]==="صح"||p[1]==="خطأ")?"tf":"fill";Q.push({type:t,text:p[0],correct:p[1],wrong:t==="mc"?w:[],exp:p[3]||"",diff:[1,2,3].includes(+p[4])?+p[4]:2});n++});$("#bulk").value="";$("#msg").textContent="تم استيراد "+n+" سؤالًا";render()}
+function render(){$("#qn").textContent="("+Q.length+")";
+ $("#qlist").innerHTML=Q.map((q,i)=>`<div class="qi"><span>${i+1}. ${esc(q.text)} <small>(${T[q.type]} · ${["","سهل","متوسط","صعب"][q.diff]})</small></span><button data-k="u" data-i="${i}" aria-label="للأعلى">▲</button><button data-k="n" data-i="${i}" aria-label="للأسفل">▼</button><button data-k="p" data-i="${i}">معاينة</button><button data-k="e" data-i="${i}">تعديل</button><button data-k="d" data-i="${i}">حذف</button></div><div id="pv${i}" class="hide card">${q.type==="mc"?[q.correct,...q.wrong].map(o=>"• "+esc(o)).join("<br>"):""}<br>✔ ${esc(q.correct)}${q.exp?"<br>"+esc(q.exp):""}</div>`).join("");
+ const c=[0,1,2,3].map(d=>Q.filter(q=>q.diff===d).length);$("#warn").textContent=Q.length?`سهل ${c[1]} · متوسط ${c[2]} · صعب ${c[3]}`+(Q.length<10?" · يُفضَّل 10 أسئلة أو أكثر ليكفي كل الأنماط":""):"";
+ const f=fname();const j=JSON.stringify(data(),null,1);$("#out").value=j;const b=V("base").trim();$("#url").textContent=b?b+"?lesson=lessons/"+f+".json":"أدخل رابط صفحة اللعبة أعلاه";save()}
+const fname=()=>(V("fn").trim().replace(/[^A-Za-z0-9_-]/g,"")||"lesson-1");
+const hashUrl=()=>{const b=V("base").trim()||"index.html";return b+"#d="+btoa(unescape(encodeURIComponent(JSON.stringify(data()))))};
+$("#qlist").onclick=e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.i,k=b.dataset.k;
+ if(k==="d"){Q.splice(i,1);render()}else if(k==="u"&&i>0){[Q[i-1],Q[i]]=[Q[i],Q[i-1]];render()}else if(k==="n"&&i<Q.length-1){[Q[i+1],Q[i]]=[Q[i],Q[i+1]];render()}
+ else if(k==="p")$("#pv"+i).classList.toggle("hide");else if(k==="e"){const q=Q[i];ed=i;$("#qt").value=q.type;form();$("#qd").value=q.diff;$("#qx").value=q.text;if(q.type==="tf")$("#qtf").value=q.correct;else $("#qc").value=q.correct;$("#qw").value=q.wrong.join("\n");$("#qe").value=q.exp||"";$("#qadd").textContent="حفظ التعديل";$("#mode").classList.remove("hide");$("#qcancel").classList.remove("hide");scrollTo(0,0)}};
+$("#qt").onchange=form;$("#qadd").onclick=add;$("#qcancel").onclick=reset;$("#bimp").onclick=bulk;$("#clr").onclick=()=>{if(Q.length&&!confirm("مسح كل الأسئلة؟"))return;Q=[];render()};
+["subj","lesson","grade","summary","fn","base"].forEach(i=>$("#"+i).addEventListener("input",render));
+$("#dl").onclick=()=>{if(!Q.length){$("#msg").textContent="أضف أسئلة أولًا";return}try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data(),null,1)],{type:"application/json"}));a.download=fname()+".json";document.body.appendChild(a);a.click();a.remove();$("#msg").textContent="تم حفظ "+fname()+".json. ارفعه إلى مجلد lessons في GitHub."}catch(e){$("#msg").textContent="تعذّر التحميل، انسخ المحتوى من المربع أدناه"}};
+$("#cp").onclick=async()=>{const u=hashUrl();try{await navigator.clipboard.writeText(u);$("#msg").textContent="تم نسخ الرابط"}catch(e){$("#out").value=u;$("#out").select();$("#msg").textContent="انسخ الرابط من المربع أدناه"}};
+$("#pvw").onclick=()=>{if(!Q.length){$("#msg").textContent="أضف أسئلة أولًا";return}open(hashUrl(),"_blank")};
+$("#lf").onchange=e=>{const f=e.target.files[0];if(f)f.text().then(t=>{try{if(load(JSON.parse(t)))$("#msg").textContent="تم فتح الدرس"}catch(x){$("#msg").textContent="ملف غير صالح"}})};
+try{load(JSON.parse(localStorage.getItem("abkb")))}catch(e){}form();render();})();
+</script></body></html>
